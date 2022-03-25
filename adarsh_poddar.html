@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Adarsh Poddar</title>
+    <style>
+        body {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            margin: 0;
+        }
+
+        .main-container {
+            margin: auto;
+        }
+
+        .object-container {
+            position: relative;
+            height: 350px;
+            width: 350px;
+            text-align: center;
+        }
+
+        .button-container {
+            margin: 70px 0;
+            display: flex;
+        }
+
+        .circle-object {
+            position: absolute;
+            height: 100px;
+            width: 100px;
+            background-color: white;
+            border-radius: 50px;
+            -webkit-transition: 1s;
+            transition: 1s;
+        }
+
+        #circle-object-1 {
+            background-color: #FD5D5D;
+            left: 0;
+            top: 0;
+            z-index: 4;
+        }
+
+        #circle-object-2 {
+            background-color: #FFE61B;
+            right: 0;
+            top: 0;
+            z-index: 3;
+        }
+
+        #circle-object-3 {
+            background-color: #4D77FF;
+            right: 0;
+            bottom: 0;
+            z-index: 2;
+        }
+
+        #circle-object-4 {
+            background-color: #00C897;
+            left: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        .button {
+            margin: 0;
+            background-color: #00C897;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+
+        .button:hover {
+            background-color: #019267;
+        }
+
+        .start-button {
+            margin-right: auto;
+        }
+
+        .stop-button {
+            margin-left: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="object-container">
+            <div class="circle-object" id="circle-object-1"></div>
+            <div class="circle-object" id="circle-object-2"></div>
+            <div class="circle-object" id="circle-object-3"></div>
+            <div class="circle-object" id="circle-object-4"></div>
+        </div>
+        <div class="button-container">
+            <button class="button start-button" onclick="startAnimation()">Start</button>
+            <button class="button stop-button" onclick="stopAnimation()">Stop</button>
+        </div>
+    </div>
+
+
+    
+    <script>
+        const colors = ['#FD5D5D', '#FFE61B', '#4D77FF', '#00C897'];
+        const circleObj1 = document.getElementById("circle-object-1");
+        const circleObj2 = document.getElementById("circle-object-2");
+        const circleObj3 = document.getElementById("circle-object-3");
+        const circleObj4 = document.getElementById("circle-object-4");
+        let animationTimer;
+        let numColors = colors.length;
+        let runningFlag = false;
+        let stopFlag = true;
+        let i = 0;
+        let animationToggle = true;
+
+        const expandShape = () => {
+            circleObj1.style.width = '350px';
+            circleObj2.style.height = '350px';
+            circleObj3.style.width = '350px';
+            circleObj4.style.height = '350px';
+        }
+
+        const contractShape = () => {
+            circleObj1.style.width = '100px';
+            circleObj2.style.height = '100px';
+            circleObj3.style.width = '100px';
+            circleObj4.style.height = '100px';
+        }
+
+        const animateColor = () => {
+            i++;
+            if (i > numColors - 1) {
+                i = 0;
+            }
+            changeColor(circleObj1, i);
+            changeColor(circleObj2, i + 1);
+            changeColor(circleObj3, i + 2);
+            changeColor(circleObj4, i + 3);
+        }
+
+        const changeColor = (colorObj, i) => {
+            if (i > numColors - 1) {
+                i = i - numColors;
+            }
+            colorObj.style.backgroundColor = `${colors[i]}`;
+        }
+
+        const animate = () => {
+            if (animationToggle) {
+                if (!stopFlag) {
+                    animationToggle = false;
+                    animateColor();
+                    expandShape();
+                } else {
+                    clearInterval(animationTimer);
+                }
+            } else {
+                animationToggle = true;
+                contractShape();
+            }
+        }
+
+
+        const startAnimation = () => {
+            stopFlag = false;
+            if (!runningFlag) {
+                runningFlag = true;
+                animate();
+                animationTimer = setInterval(() => {
+                    animate();
+                }, 1500)
+            } else {
+                console.log('Animation is already running')
+            }
+        }
+
+        const stopAnimation = () => {
+            stopFlag = true;
+            runningFlag = false;
+        }
+
+    </script>
+</body>
+
+</html>
